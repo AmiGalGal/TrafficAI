@@ -50,3 +50,4 @@ cd TrafficProject
 
 pip install -r requirements.txt
 
+Due to time and computation constraints train.py may be flawed.
