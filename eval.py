@@ -30,7 +30,6 @@ def list_files(img_dir, lbl_dir):
 def eval_step(model, images, labels):
     outputs = model(images, training=False)
 
-    # -------- METRICS --------
     det_iou = detection_mean_iou(labels, outputs["detection"])
     seg_acc = segmentation_pixel_accuracy(labels, outputs["segmentation"])
     seg_iou = segmentation_mean_iou(labels, outputs["segmentation"], NUM_SEG_CLASSES)
@@ -54,7 +53,6 @@ def detection_loss(y_true, y_pred):
     pred_obj = tf.squeeze(y_pred["objectness"], -1)
     pred_obj = tf.clip_by_value(pred_obj, 1e-6, 1.0 - 1e-6)
 
-    # ---------------- Box loss ----------------
     delta = 1.0
     diff = true_boxes - pred_boxes
     abs_diff = tf.abs(diff)
@@ -63,7 +61,6 @@ def detection_loss(y_true, y_pred):
     box_loss = box_loss * valid
     box_loss = tf.reduce_sum(box_loss) / (tf.reduce_sum(valid) + 1e-6)
 
-    # ---------------- Classification ----------------
     cls_mask = tf.logical_and(valid > 0, true_classes > 0)
     cls_mask = tf.cast(cls_mask, tf.float32)
     cls_targets = tf.maximum(true_classes - 1, 0)  # 0-based for sparse_softmax
@@ -73,7 +70,6 @@ def detection_loss(y_true, y_pred):
     )
     cls_loss = tf.reduce_sum(cls_loss * cls_mask) / (tf.reduce_sum(cls_mask) + 1e-6)
 
-    # ---------------- Objectness ----------------
     obj_loss = tf.keras.losses.binary_crossentropy(valid, pred_obj)
     obj_loss = tf.reduce_mean(obj_loss)
 
@@ -142,5 +138,6 @@ def main():
         compile=False
     )
     evaluation(model, eval_ds)
+
 
 main()
