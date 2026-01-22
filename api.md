@@ -151,14 +151,6 @@ main – builds datasets and model, trains heads first, then fine-tunes the full
 
 
 
-demo.py
-
-predictions\_to\_labels – converts model outputs into structured label format with segmentation mask, boxes, and scene.
-
-single\_image\_dataset – creates a one-sample tf.data.Dataset from a single image and its labels
-
-
-
 
 
 
