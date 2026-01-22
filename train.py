@@ -11,10 +11,6 @@ from metrics import (
 from tf_pipeline import build_dataset
 from multiTask import build_multitask_model
 
-# =========================
-# CONFIG
-# =========================
-
 LOG_DIR = "logs/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 writer = tf.summary.create_file_writer(LOG_DIR)
 count = 0
@@ -262,3 +258,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
